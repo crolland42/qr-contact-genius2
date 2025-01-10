@@ -1,11 +1,8 @@
-name = "qr-contact-genius-worker"
-type = "javascript"
+name = "qr-contact-genius2"
+account_id = "03a8844ed6814af33b14f6394f04ff77"
+workers_dev = true
 
-account_id = "03a8844ed6814af33b14f6394f04ff77" # ID de votre compte Cloudflare.
-workers_dev = true # Activer le mode développement.
-
-# Optionnel : Spécifiez des routes pour le Worker en production.
+# Route pour le Worker en production
 route = "https://cardinterclosing.corentin-rollandpro.workers.dev"
-zone_id = "03a8844ed6814af33b14f6394f04ff77"
 
-main = "./worker.js" # Chemin vers le fichier Workers principal.
+main = "./worker.js"
