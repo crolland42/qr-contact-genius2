@@ -3,3 +3,6 @@ account_id = "03a8844ed6814af33b14f6394f04ff77"
 workers_dev = true
 compatibility_date = "2025-01-10"
 main = "./worker.js"
+
+[site]
+bucket = "./dist"
