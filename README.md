@@ -67,3 +67,25 @@ Simply open [Lovable](https://lovable.dev/projects/53b9faf6-7993-4e97-8522-c5710
 ## I want to use a custom domain - is that possible?
 
 We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+
+## Déploiement sur Cloudflare
+
+Cette application peut également être déployée sur Cloudflare Pages.
+
+Pour déployer sur Cloudflare Pages, suivez ces étapes :
+```sh
+# Installer les dépendances
+npm install
+
+# Démarrer le serveur de développement
+npm run dev
+```
+
+## Build
+
+Pour construire l'application :
+```sh
+npm run build
+```
+
+Le build sera généré dans le dossier `dist/`.
