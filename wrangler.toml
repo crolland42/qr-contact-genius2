@@ -1,6 +1,0 @@
-name = "qr-contact-genius"
-type = "javascript"
-workers_dev = true
-
-[build]
-command = "npm install && npm run build"
