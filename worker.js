@@ -1,5 +1,5 @@
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     
     // Gérer les requêtes CORS
@@ -17,29 +17,37 @@ export default {
     }
 
     try {
-      // Essayer de servir le fichier statique depuis l'asset manifest
-      let response = await env.ASSETS.fetch(request);
-      
       // Si c'est une route d'API
       if (url.pathname.startsWith('/api')) {
         return handleApiRequest(request);
       }
+
+      // Essayer de servir le fichier statique
+      const asset = await env.__STATIC_CONTENT.get(url.pathname.slice(1));
       
-      // Pour toutes les autres routes, on sert index.html pour le routage côté client
-      if (!response.ok && response.status === 404) {
-        response = await env.ASSETS.fetch(`${url.origin}/index.html`);
+      if (asset) {
+        const headers = new Headers(corsHeaders);
+        if (url.pathname.endsWith('.js')) {
+          headers.set('Content-Type', 'application/javascript');
+        } else if (url.pathname.endsWith('.css')) {
+          headers.set('Content-Type', 'text/css');
+        } else if (url.pathname.endsWith('.html')) {
+          headers.set('Content-Type', 'text/html');
+        }
+        return new Response(asset.body, { headers });
       }
 
-      // Ajouter les headers CORS à la réponse
-      const newHeaders = new Headers(response.headers);
-      Object.keys(corsHeaders).forEach(key => {
-        newHeaders.set(key, corsHeaders[key]);
-      });
+      // Pour toutes les autres routes, servir index.html
+      const indexHtml = await env.__STATIC_CONTENT.get('index.html');
+      if (indexHtml) {
+        const headers = new Headers(corsHeaders);
+        headers.set('Content-Type', 'text/html');
+        return new Response(indexHtml.body, { headers });
+      }
 
-      return new Response(response.body, {
-        status: response.status,
-        statusText: response.statusText,
-        headers: newHeaders
+      return new Response('Not Found', { 
+        status: 404,
+        headers: corsHeaders
       });
 
     } catch (e) {
